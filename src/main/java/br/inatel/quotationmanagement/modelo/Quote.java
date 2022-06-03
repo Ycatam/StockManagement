@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Quotes {
+public class Quote {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,16 @@ public class Quotes {
 	
 	@NotNull
 	private Double price;
+
+	public Quote() {
+		
+	}
+
+	public Quote(LocalDate date, Double price) {
+		
+		this.date = date;
+		this.price = price;
+	}
 
 	public LocalDate getDate() {
 		return date;
@@ -72,7 +82,7 @@ public class Quotes {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Quotes other = (Quotes) obj;
+		Quote other = (Quote) obj;
 		return Objects.equals(date, other.date) && Objects.equals(id, other.id) && Objects.equals(price, other.price)
 				&& Objects.equals(stock, other.stock);
 	}

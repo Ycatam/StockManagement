@@ -1,10 +1,7 @@
 package br.inatel.quotationmanagement.modelo;
 
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,33 +28,12 @@ public class Stock {
 	private String stockId;
 
 	@OneToMany(mappedBy = "stock")
-	private List<Quotes> quotes = new ArrayList<>();
-	//private Map<LocalDate, Double> quotes = new HashMap<>();
+	private List<Quote> quotes = new ArrayList<>();
 
 	public Stock() {
 
 	}
 
-	public Stock(UUID id, String stockId, List<Quotes> quotes) {
-		
-		this.id = id;
-		this.stockId = stockId;
-		this.quotes = quotes;
-		
-	}
-
-//	public Stock(String stockId, Map<LocalDate, Double> quotes) {
-//
-//		this.stockId = stockId;
-//		this.quotes = quotes;
-//
-//	}
-
-	public Stock(String stockId, Map<LocalDate, Double> quotes) {
-		
-		this.stockId = stockId;
-		
-	}
 
 	public String getStockId() {
 		return stockId;
@@ -67,24 +43,20 @@ public class Stock {
 		this.stockId = stockId;
 	}
 
-	public List<Quotes> getQuotes() {
+	public List<Quote> getQuotes() {
 		return quotes;
 	}
 	
-//	public Map<LocalDate, Double> getQuotes() {
-//		return quotes;
-//	}
-
-//	public void setQuotes(Map<LocalDate, Double> quotes) {
-//		this.quotes = quotes;
-//	}
-	
-	public void setQuotes(List<Quotes> quotes) {
+	public void setQuotes(List<Quote> quotes) {
 		this.quotes = quotes;
 	}
 
 	public UUID getId() {
 		return id;
+	}
+	
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	@Override

@@ -2,14 +2,14 @@ package br.inatel.quotationmanagement.dto;
 
 import java.time.LocalDate;
 
-import br.inatel.quotationmanagement.modelo.Quotes;
+import br.inatel.quotationmanagement.modelo.Quote;
 
 public class QuotesDto {
 	
 	private LocalDate date;
 	private Double price;
 	
-	public QuotesDto(Quotes quotes) {
+	public QuotesDto(Quote quotes) {
 		
 		this.date = quotes.getDate();
 		this.price= quotes.getPrice();
