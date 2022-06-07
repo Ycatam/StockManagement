@@ -37,7 +37,7 @@ public class StockController {
 	public List<StockDto> list(){
 		
 		List<Stock> listAllStocks = stockService.list();
-		return StockDto.converter(listAllStocks);
+		return StockDto.converterToDto(listAllStocks);
 	
 	}
 	
@@ -58,10 +58,9 @@ public class StockController {
 	@PostMapping
 	@CacheEvict(value = "stockCache", allEntries = true)
 	public ResponseEntity<StockDto> register(@RequestBody @Valid StockDto stockDto, UriComponentsBuilder uriBuilder){
-		
-		Stock stock = stockDto.converter();
+	
+		Stock stock = stockDto.converterToStock(stockDto);
 		stock = stockService.save(stock);
-		//quote = quoteRepository.save(quote);
 		
 		URI uri = uriBuilder.path("/stocks/{stockId}").buildAndExpand(stock.getStockId()).toUri();
 		

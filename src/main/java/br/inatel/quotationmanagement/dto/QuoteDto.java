@@ -4,15 +4,15 @@ import java.time.LocalDate;
 
 import br.inatel.quotationmanagement.modelo.Quote;
 
-public class QuotesDto {
+public class QuoteDto {
 	
 	private LocalDate date;
 	private Double price;
 	
-	public QuotesDto(Quote quotes) {
+	public QuoteDto(Quote quote) {
 		
-		this.date = quotes.getDate();
-		this.price= quotes.getPrice();
+		this.date = quote.getDate();
+		this.price= quote.getPrice();
 		
 	}
 
@@ -31,7 +31,5 @@ public class QuotesDto {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	
-	
 
 }

@@ -1,5 +1,6 @@
 package br.inatel.quotationmanagement.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,10 +39,10 @@ public class StockService {
 	}
 
 	public Stock save(Stock stock) {
-		List<Quote> quotes = stock.getQuotes();
 		
+		List<Quote> quotes = new ArrayList<Quote>();
 		stock = stockRepository.save(stock);
-		
+
 		for (Quote quote : quotes) {
 			quote.setStock(stock);
 			quoteRepository.save(quote);

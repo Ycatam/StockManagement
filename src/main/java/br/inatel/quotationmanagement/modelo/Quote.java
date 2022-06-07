@@ -21,20 +21,21 @@ public class Quote {
 	private LocalDate date;
 	
 	@ManyToOne
-	@NotNull
 	private Stock stock;
 	
 	@NotNull
 	private Double price;
-
+	
 	public Quote() {
 		
 	}
 
-	public Quote(LocalDate date, Double price) {
+	public Quote(LocalDate date, Double price, Stock stock) {
 		
 		this.date = date;
 		this.price = price;
+		this.stock = stock;
+		
 	}
 
 	public LocalDate getDate() {
@@ -68,7 +69,7 @@ public class Quote {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(date, id, price, stock);

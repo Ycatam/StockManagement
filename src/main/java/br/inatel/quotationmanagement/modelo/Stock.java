@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,13 +28,19 @@ public class Stock {
 	@Size(max = 10)
 	private String stockId;
 
-	@OneToMany(mappedBy = "stock")
+	@OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
 	private List<Quote> quotes = new ArrayList<>();
 
 	public Stock() {
 
 	}
+	
 
+	public Stock(String stockId, List<Quote> quotes) {
+		
+		this.stockId = stockId;
+		this.quotes = quotes;
+	}
 
 	public String getStockId() {
 		return stockId;
