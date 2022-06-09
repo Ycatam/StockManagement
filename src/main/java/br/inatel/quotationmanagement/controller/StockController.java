@@ -25,7 +25,7 @@ import br.inatel.quotationmanagement.service.StockService;
 @RestController
 @RequestMapping("/stocks")
 public class StockController {
-	
+
 	private StockService stockService;
 
 	public StockController(StockService stockService) {
@@ -34,19 +34,19 @@ public class StockController {
 
 	@GetMapping
 	@Cacheable(value = "stockCache")
-	public List<StockDto> list(){
-		
+	public List<StockDto> list() {
+
 		List<Stock> listAllStocks = stockService.list();
 		return StockDto.converterToDto(listAllStocks);
-	
+
 	}
-	
+
 	@GetMapping("/{stockId}")
-	public ResponseEntity<StockDto> listByStockId(@PathVariable String stockId){
-		
+	public ResponseEntity<StockDto> listByStockId(@PathVariable String stockId) {
+
 		Optional<Stock> opStock = stockService.findByStockId(stockId);
 		if (opStock.isPresent()) {
-			
+
 			StockDto stockDto = new StockDto(opStock.get());
 			return ResponseEntity.ok(stockDto);
 
@@ -54,26 +54,35 @@ public class StockController {
 
 		return ResponseEntity.notFound().build();
 	}
-	
+
 	@PostMapping
 	@CacheEvict(value = "stockCache", allEntries = true)
-	public ResponseEntity<StockDto> register(@RequestBody @Valid StockDto stockDto, UriComponentsBuilder uriBuilder){
-	
+	public ResponseEntity<StockDto> register(@RequestBody @Valid StockDto stockDto, UriComponentsBuilder uriBuilder) {
+
 		Stock stock = stockDto.converterToStock(stockDto);
-		stock = stockService.save(stock);
-		
-		URI uri = uriBuilder.path("/stocks/{stockId}").buildAndExpand(stock.getStockId()).toUri();
-		
-		return ResponseEntity.created(uri).body(new StockDto(stock));
-		
+
+		Boolean compare = stockService.comparingTwoStockIds(stock);
+
+		if (compare) {
+
+			stock = stockService.save(stock);
+
+			URI uri = uriBuilder.path("/stocks/{stockId}").buildAndExpand(stock.getStockId()).toUri();
+
+			return ResponseEntity.created(uri).body(new StockDto(stock));
+
+		}
+
+		return ResponseEntity.badRequest().build();
+
 	}
-	
+
 	@DeleteMapping("/{stockId}")
 	@CacheEvict(value = "stockCache", allEntries = true)
-	public ResponseEntity<?> delete(@PathVariable String stockId){
-		
-		Optional <Stock> optional = stockService.findByStockId(stockId);
-		
+	public ResponseEntity<?> delete(@PathVariable String stockId) {
+
+		Optional<Stock> optional = stockService.findByStockId(stockId);
+
 		if (optional.isPresent()) {
 
 			Stock stock = optional.get();
@@ -83,7 +92,7 @@ public class StockController {
 		}
 
 		return ResponseEntity.notFound().build();
-		
+
 	}
 
 }
