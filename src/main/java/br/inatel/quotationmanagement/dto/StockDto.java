@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import br.inatel.quotationmanagement.modelo.Quote;
@@ -32,6 +33,27 @@ public class StockDto {
 			this.quotes.put(dateStr, priceStr);
 		});
 		
+	}
+	
+	public Stock converterToStock() {
+		Stock stock = new Stock();
+		if (this.id != null && !this.id.trim().isEmpty()) {
+			stock.setId(UUID.fromString(this.id));
+		}
+		stock.setStockId(this.stockId);
+		
+		List<Quote> listQuote = new ArrayList<Quote>();
+		for (Entry<String, String> entry : this.quotes.entrySet()) {
+			
+			LocalDate date = LocalDate.parse(entry.getKey(), DTF);
+			Double price = Double.parseDouble(entry.getValue());
+			Quote quote = new Quote(date, price, stock);
+			listQuote.add(quote);
+		}
+		
+		stock.setQuotes(listQuote);		
+		
+		return stock;
 	}
 	
 	public StockDto() {
@@ -67,23 +89,5 @@ public class StockDto {
 		return stock.stream().map(StockDto::new).collect(Collectors.toList());
 		
 	}
-
-	public Stock converterToStock(StockDto stockDto) {
-		Stock stock = new Stock();
-		stock.setStockId(this.stockId);
-		
-		List<Quote> listQuote = new ArrayList<Quote>();
-		for (Entry<String, String> entry : this.quotes.entrySet()) {
-			
-			LocalDate date = LocalDate.parse(entry.getKey(), DTF);
-			Double price = Double.parseDouble(entry.getValue());
-			Quote quote = new Quote(date, price, stock);
-			listQuote.add(quote);
-		}
-		
-		stock.setQuotes(listQuote);		
-		
-		return stock;
-	}
-
+	
 }

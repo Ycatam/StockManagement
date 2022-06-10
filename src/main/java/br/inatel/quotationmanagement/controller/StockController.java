@@ -1,6 +1,5 @@
 package br.inatel.quotationmanagement.controller;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.inatel.quotationmanagement.dto.StockDto;
 import br.inatel.quotationmanagement.modelo.Stock;
@@ -57,23 +57,17 @@ public class StockController {
 
 	@PostMapping
 	@CacheEvict(value = "stockCache", allEntries = true)
-	public ResponseEntity<StockDto> register(@RequestBody @Valid StockDto stockDto, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<StockDto> register(@RequestBody @Valid StockDto stockDto) {
 
-		Stock stock = stockDto.converterToStock(stockDto);
-
-		Boolean compare = stockService.comparingTwoStockIds(stock);
-
-		if (compare) {
-
+		Stock stock = stockDto.converterToStock();
+		
+		try {
 			stock = stockService.save(stock);
-
-			URI uri = uriBuilder.path("/stocks/{stockId}").buildAndExpand(stock.getStockId()).toUri();
-
-			return ResponseEntity.created(uri).body(new StockDto(stock));
-
+			return ResponseEntity.ok(new StockDto(stock));
+			
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
-
-		return ResponseEntity.badRequest().build();
 
 	}
 

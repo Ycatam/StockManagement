@@ -38,6 +38,14 @@ public class Quote {
 		
 	}
 
+	public Quote(LocalDate date, Double price, String stockId) {
+
+		this.date = date;
+		this.price = price;
+		stockId = stock.getStockId();
+	
+	}
+
 	public LocalDate getDate() {
 		return date;
 	}
