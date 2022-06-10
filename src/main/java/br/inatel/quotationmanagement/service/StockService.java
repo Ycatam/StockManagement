@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import br.inatel.quotationmanagement.adatpter.StockManagerAdapter;
 import br.inatel.quotationmanagement.dto.StockManagementDto;
+import br.inatel.quotationmanagement.modelo.Quote;
 import br.inatel.quotationmanagement.modelo.Stock;
+import br.inatel.quotationmanagement.repository.QuoteRepository;
 import br.inatel.quotationmanagement.repository.StockRepository;
 
 @Service
@@ -17,19 +19,20 @@ import br.inatel.quotationmanagement.repository.StockRepository;
 public class StockService {
 
 	private StockRepository stockRepository;
+	private QuoteRepository quoteRepository;
 	private StockManagerAdapter stockManagerAdapter;
 
-	public StockService(StockRepository stockRepository,
+	public StockService(StockRepository stockRepository, QuoteRepository quoteRepository,
 			StockManagerAdapter stockManagerAdapter) {
 
 		this.stockRepository = stockRepository;
+		this.quoteRepository = quoteRepository;
 		this.stockManagerAdapter = stockManagerAdapter;
 	}
 
 	public List<Stock> list() {
 
 		List<Stock> listAllStocks = stockRepository.findAll();
-		listAllStocks.size();
 		return listAllStocks;
 
 	}
