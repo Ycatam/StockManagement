@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import br.inatel.quotationmanagement.modelo.Quote;
 import br.inatel.quotationmanagement.modelo.Stock;

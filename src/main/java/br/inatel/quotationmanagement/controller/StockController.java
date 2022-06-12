@@ -35,9 +35,8 @@ public class StockController {
 	@GetMapping
 	@Cacheable(value = "stockCache")
 	public List<StockDto> list() {
-
-		List<Stock> listAllStocks = stockService.list();
-		return StockDto.converterToDto(listAllStocks);
+		 
+		return stockService.list();
 
 	}
 

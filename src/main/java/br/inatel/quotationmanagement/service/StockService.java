@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import br.inatel.quotationmanagement.adatpter.StockManagerAdapter;
+import br.inatel.quotationmanagement.dto.StockDto;
 import br.inatel.quotationmanagement.dto.StockManagementDto;
 import br.inatel.quotationmanagement.modelo.Quote;
 import br.inatel.quotationmanagement.modelo.Stock;
@@ -30,10 +31,10 @@ public class StockService {
 		this.stockManagerAdapter = stockManagerAdapter;
 	}
 
-	public List<Stock> list() {
+	public List<StockDto> list() {
 
 		List<Stock> listAllStocks = stockRepository.findAll();
-		return listAllStocks;
+		return StockDto.converterToDto(listAllStocks);
 
 	}
 
