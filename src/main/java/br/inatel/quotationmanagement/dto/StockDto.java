@@ -7,9 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import br.inatel.quotationmanagement.modelo.Quote;
 import br.inatel.quotationmanagement.modelo.Stock;
@@ -39,7 +37,7 @@ public class StockDto {
 	public Stock converterToStock() {
 		Stock stock = new Stock();
 		if (this.id != null && !this.id.trim().isEmpty()) {
-			stock.setId(UUID.fromString(this.id));
+			stock.setId(this.id);
 		}
 		stock.setStockId(this.stockId);
 		
