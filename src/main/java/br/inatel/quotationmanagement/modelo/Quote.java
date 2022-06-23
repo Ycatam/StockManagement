@@ -9,10 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+
 
 @Entity
 public class Quote {
 	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -24,6 +27,7 @@ public class Quote {
 	private Stock stock;
 	
 	@NotNull
+	@PositiveOrZero(message = "Somente numeros positivos ou zero")
 	private Double price;
 	
 	public Quote() {
@@ -80,7 +84,7 @@ public class Quote {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(date, id, price, stock);
+		return Objects.hash(date, price, stock);
 	}
 
 	@Override
@@ -92,9 +96,8 @@ public class Quote {
 		if (getClass() != obj.getClass())
 			return false;
 		Quote other = (Quote) obj;
-		return Objects.equals(date, other.date) && Objects.equals(id, other.id) && Objects.equals(price, other.price)
+		return Objects.equals(date, other.date) && Objects.equals(price, other.price)
 				&& Objects.equals(stock, other.stock);
 	}
-	
 	
 }
