@@ -60,6 +60,12 @@ public class StockDto {
 		return stock;
 	}
 	
+	public static List<StockDto> converterToDto(List<Stock> stock){
+		
+		return stock.stream().map(StockDto::new).collect(Collectors.toList());
+		
+	}
+	
 	public String getStockId() {
 		return stockId;
 	}
@@ -82,12 +88,6 @@ public class StockDto {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public static List<StockDto> converterToDto(List<Stock> stock){
-		
-		return stock.stream().map(StockDto::new).collect(Collectors.toList());
-		
 	}
 	
 }

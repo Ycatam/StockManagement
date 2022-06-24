@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.inatel.quotationmanagement.adatpter.StockManagerAdapter;
 import br.inatel.quotationmanagement.dto.StockDto;
 import br.inatel.quotationmanagement.dto.StockManagementDto;
+import br.inatel.quotationmanagement.modelo.Quote;
 import br.inatel.quotationmanagement.modelo.Stock;
 import br.inatel.quotationmanagement.repository.QuoteRepository;
 import br.inatel.quotationmanagement.repository.StockRepository;
@@ -22,8 +23,7 @@ public class StockService {
 	private QuoteRepository quoteRepository;
 	private StockManagerAdapter stockManagerAdapter;
 
-	public StockService(StockRepository stockRepository,
-			QuoteRepository quoteRepository,
+	public StockService(StockRepository stockRepository, QuoteRepository quoteRepository,
 			StockManagerAdapter stockManagerAdapter) {
 		this.stockRepository = stockRepository;
 		this.quoteRepository = quoteRepository;
@@ -45,24 +45,24 @@ public class StockService {
 
 	public Stock save(Stock stock) {
 
-		if(!verifyIfExistInStockManager(stock)) {
+		if (!verifyIfExistInStockManager(stock)) {
 			throw new RuntimeException("Stock não existente!");
 		}
-		
-//		if(verifyIfQuoteDateExists(stock)) {
-//			throw new RuntimeException("Data já cadastrada");
-//		}
-			
+
+		if (verifyIfQuoteDateExists(stock)) {
+			throw new RuntimeException("Data já cadastrada");
+		}
+
 		Optional<Stock> opStock = stockRepository.findByStockId(stock.getStockId());
 		if (opStock.isPresent()) {
-			
+
 			Stock stockAux = opStock.get();
 			stock.setId(stockAux.getId());
-			
+
 		}
-		
+
 		stock = stockRepository.save(stock);
-		stock.getQuotes().size();//forçando load
+		stock.getQuotes().size();// forçando load
 		return stock;
 
 	}
@@ -89,18 +89,24 @@ public class StockService {
 		return false;
 
 	}
-	
-//	public Boolean verifyIfQuoteDateExists(Stock stock) {
-//		
-//		List<Object> listObj = quoteRepository.listAllQuoteDates();
-//		
-//		for (Object quoteObj : listObj) {
-//			
-//			if(quoteObj.equals(stock.getQuotes())) {
-//				return true;
-//		}
-//			
-//		}
-//		return false;
-//	}		
+
+	public Boolean verifyIfQuoteDateExists(Stock stock) {
+
+		List<Quote> listQuote = quoteRepository.findAll();
+		List<Quote> quotesList = stock.getQuotes();
+
+		for (Quote quote : listQuote) {
+
+			for (Quote quote2 : quotesList) {
+
+				if (quote.getDate().equals(quote2.getDate())) {
+
+					return true;
+				}
+
+			}
+		}
+		return false;
+	}
+
 }
