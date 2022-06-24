@@ -22,6 +22,11 @@ public class StockDto {
 	
 	private Map<String, String> quotes = new HashMap<>();
 	
+	
+	public StockDto() {
+		
+	}
+	
 	public StockDto(Stock stock) {
 		
 		this.id = stock.getId().toString();
@@ -55,10 +60,6 @@ public class StockDto {
 		return stock;
 	}
 	
-	public StockDto() {
-		
-	}
-
 	public String getStockId() {
 		return stockId;
 	}
