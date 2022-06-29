@@ -43,14 +43,10 @@ public class StockService {
 		return opStock;
 	}
 
-	public Stock save(Stock stock) {
+	public Stock save(Stock stock, List<Quote> listQuote) {
 
 		if (!verifyIfExistInStockManager(stock)) {
 			throw new RuntimeException("Stock não existente!");
-		}
-
-		if (verifyIfQuoteDateExists(stock)) {
-			throw new RuntimeException("Data já cadastrada");
 		}
 
 		Optional<Stock> opStock = stockRepository.findByStockId(stock.getStockId());
@@ -62,6 +58,41 @@ public class StockService {
 		}
 
 		stock = stockRepository.save(stock);
+		
+		for (Quote quote : listQuote) {
+			
+			quote.setStock(stock);
+			
+//			Optional<Quote> opQuote = quoteRepository.findByDateAndStockId(quote.getDate(), stock.getStockId());
+			
+			List<Quote> opQuote = quoteRepository.findAllByStockId(stock.getId());
+			
+			if (opQuote.isEmpty()) {
+				quoteRepository.save(quote);
+			}
+			
+			else {
+				
+				Boolean exists = false;
+				
+				for (Quote quoteAux : opQuote) {
+					
+					if (quote.getDate().equals(quoteAux.getDate())) {
+						//throw new RuntimeException("Data já cadastrada: " + quote.getDate() + " para o stock: " + stock.getStockId());
+						exists = true;
+						break;
+					}
+					
+				}
+				
+				if (!exists) {
+					quoteRepository.save(quote);
+				}
+				
+			}
+			
+		}
+		
 		stock.getQuotes().size();// forçando load
 		return stock;
 
@@ -90,23 +121,23 @@ public class StockService {
 
 	}
 
-	public Boolean verifyIfQuoteDateExists(Stock stock) {
-
-		List<Quote> listQuote = quoteRepository.findAll();
-		List<Quote> quotesList = stock.getQuotes();
-
-		for (Quote quote : listQuote) {
-
-			for (Quote quote2 : quotesList) {
-
-				if (quote.getDate().equals(quote2.getDate())) {
-
-					return true;
-				}
-
-			}
-		}
-		return false;
-	}
+//	public Boolean verifyIfQuoteDateExists(Stock stock) {
+//
+//		List<Quote> listQuote = quoteRepository.findAll();
+//		List<Quote> quotesList = stock.getQuotes();
+//
+//		for (Quote quote : listQuote) {
+//
+//			for (Quote quote2 : quotesList) {
+//
+//				if (quote.getDate().equals(quote2.getDate())) {
+//
+//					return true;
+//				}
+//
+//			}
+//		}
+//		return false;
+//	}
 
 }

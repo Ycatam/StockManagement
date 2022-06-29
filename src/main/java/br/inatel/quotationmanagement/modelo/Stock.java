@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,7 +27,7 @@ public class Stock {
 	@Size(max = 10)
 	private String stockId;
 
-	@OneToMany(mappedBy = "stock", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "stock", fetch = FetchType.LAZY)
 	private List<Quote> quotes = new ArrayList<>();
 
 	public Stock() {
