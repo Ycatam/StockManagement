@@ -37,10 +37,14 @@ public class StockService {
 
 	}
 
-	public Optional<Stock> findByStockId(String stockId) {
+	public StockDto findByStockId(String stockId) {
 		Optional<Stock> opStock = stockRepository.findByStockId(stockId);
-		opStock.get().getQuotes().size();
-		return opStock;
+		
+		if (opStock.isPresent()) {
+			StockDto stockDto = new StockDto(opStock.get());
+			return stockDto;
+		}
+		return null;
 	}
 
 	public Stock save(Stock stock, List<Quote> listQuote) {
@@ -62,8 +66,6 @@ public class StockService {
 		for (Quote quote : listQuote) {
 			
 			quote.setStock(stock);
-			
-//			Optional<Quote> opQuote = quoteRepository.findByDateAndStockId(quote.getDate(), stock.getStockId());
 			
 			List<Quote> opQuote = quoteRepository.findAllByStockId(stock.getId());
 			
@@ -99,8 +101,14 @@ public class StockService {
 	}
 
 	public void delete(Stock stock) {
-		stockRepository.delete(stock);
-
+		
+		List<Quote> opQuote = quoteRepository.findAllByStockId(stock.getId());
+		
+			for (Quote quote : opQuote) {
+				quoteRepository.delete(quote);
+			}
+			
+			stockRepository.delete(stock);
 	}
 
 	public Boolean verifyIfExistInStockManager(Stock stock) {
@@ -120,24 +128,5 @@ public class StockService {
 		return false;
 
 	}
-
-//	public Boolean verifyIfQuoteDateExists(Stock stock) {
-//
-//		List<Quote> listQuote = quoteRepository.findAll();
-//		List<Quote> quotesList = stock.getQuotes();
-//
-//		for (Quote quote : listQuote) {
-//
-//			for (Quote quote2 : quotesList) {
-//
-//				if (quote.getDate().equals(quote2.getDate())) {
-//
-//					return true;
-//				}
-//
-//			}
-//		}
-//		return false;
-//	}
 
 }

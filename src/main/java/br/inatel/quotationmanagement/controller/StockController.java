@@ -1,7 +1,6 @@
 package br.inatel.quotationmanagement.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -44,14 +43,12 @@ public class StockController {
 	@GetMapping("/{stockId}")
 	public ResponseEntity<StockDto> listByStockId(@PathVariable String stockId) {
 
-		Optional<Stock> opStock = stockService.findByStockId(stockId);
-		if (opStock.isPresent()) {
-
-			StockDto stockDto = new StockDto(opStock.get());
+		StockDto stockDto = stockService.findByStockId(stockId);
+		if (stockDto != null) {
+			
 			return ResponseEntity.ok(stockDto);
-
 		}
-
+		
 		return ResponseEntity.notFound().build();
 	}
 
@@ -76,11 +73,11 @@ public class StockController {
 	@CacheEvict(value = "stockCache", allEntries = true)
 	public ResponseEntity<?> delete(@PathVariable String stockId) {
 
-		Optional<Stock> optional = stockService.findByStockId(stockId);
+		StockDto optional = stockService.findByStockId(stockId);
 
-		if (optional.isPresent()) {
+		if (optional != null) {
 
-			Stock stock = optional.get();
+			Stock stock = optional.converterToStock();
 			stockService.delete(stock);
 			return ResponseEntity.ok().build();
 

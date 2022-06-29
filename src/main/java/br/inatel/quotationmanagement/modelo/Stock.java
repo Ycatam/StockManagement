@@ -30,17 +30,22 @@ public class Stock {
 	@OneToMany(mappedBy = "stock", fetch = FetchType.LAZY)
 	private List<Quote> quotes = new ArrayList<>();
 
+	//construtores...
 	public Stock() {
 
 	}
-	
 
 	public Stock(String stockId, List<Quote> quotes) {
-		
 		this.stockId = stockId;
 		this.quotes = quotes;
 	}
+	
+	//utilitarios...
+	public void addQuote(Quote quote) {
+		this.quotes.add(quote);
+	}
 
+	//acessores...
 	public String getStockId() {
 		return stockId;
 	}

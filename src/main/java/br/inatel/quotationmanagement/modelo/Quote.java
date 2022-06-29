@@ -20,7 +20,7 @@ public class Quote {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull
+	@NotNull(message = "Data não pode ser nula")
 	private LocalDate date;
 	
 	@ManyToOne
