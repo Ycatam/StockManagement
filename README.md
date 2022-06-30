@@ -39,17 +39,17 @@ This application can handle the following HTTP requests:
 * POST
 * DELETE
 
-##### List all Stocks in mysql
+### List all Stocks in mysql
 
 ##### localhost:8081/stocks
 
-##### List a Stocks by Stock Id in mysql
+### List a Stocks by Stock Id in mysql
 
 ##### localhost:8081/stocks/"id"
 
 Example: localhost:8081/stocks/petr4
 
-##### Register a Stock by Stock Id that is registered in the stock-manager container
+### Register a Stock by Stock Id that is registered in the stock-manager container
 
 To POST a new Stock in mysql a tool like Postman is require, to handle the POST request.
 A Json object is expect like the example:
@@ -66,7 +66,7 @@ A Json object is expect like the example:
 
 Through:
 
-##### localhost:8081/stocks/
+#### localhost:8081/stocks/
 
 A response with status code ok and a Json is expected like the example:
 
@@ -80,12 +80,16 @@ A response with status code ok and a Json is expected like the example:
 
 The values above is a example. Quotes can contain a single input, or a list, like the example above.
 
-##### Delete a Stock in mysql by Stock Id
+### Delete a Stock in mysql by Stock Id
 
 To handle DELETE request, a tool like Postman is required. To delete a Stock that is stored in mysql container, run the delete request with the Stock Id (the name of the stock) as a URL parameter:
 
-##### localhost:8081/stocks/"id"
+#### localhost:8081/stocks/"id"
 
 Example: localhost:8081/stocks/petr4
+
+### A Swagger documentation about this API can be checked through:
+
+#### http://localhost:8081/swagger-ui/#/
 
 Thanks in advance, have fun trying this application. Any sugestions please do a PR!
