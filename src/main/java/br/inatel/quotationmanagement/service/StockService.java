@@ -48,14 +48,12 @@ public class StockService {
 	}
 
 	public Stock save(Stock stock) {
-
-		if (!verifyIfExistInStockManager(stock)) {
-			throw new RuntimeException("Stock não existente!");
-		}
-
-		saveStock(stock);
 		
 		List<Quote> listQuote = stock.getQuotes();
+
+		verifyIfExistInStockManager(stock);
+		
+		saveStock(stock);
 		
 		listQuote.forEach(q -> saveQuote(q));
 		
@@ -63,7 +61,7 @@ public class StockService {
 
 	}
 	
-	private void saveStock(Stock stock) {
+	private Stock saveStock(Stock stock) {
 		
 		Optional<Stock> opStock = stockRepository.findByStockId(stock.getStockId());
 		if (opStock.isPresent()) {
@@ -74,6 +72,7 @@ public class StockService {
 		}
 
 		stock = stockRepository.save(stock);
+		return stock;
 		
 	}
 	
@@ -108,22 +107,22 @@ public class StockService {
 			stockRepository.delete(stock);
 	}
 
-	public Boolean verifyIfExistInStockManager(Stock stock) {
+	public void verifyIfExistInStockManager(Stock stock) {
 
 		List<StockManagementDto> listStockManager = stockManagerAdapter.listAllStockManager();
 
+		Boolean flagValid = false;
+		
 		for (StockManagementDto stockManagementDto : listStockManager) {
 
 			if (stockManagementDto.getId().equalsIgnoreCase(stock.getStockId())) {
-
-				return true;
-
+				
+				flagValid = true;
+				break;
+				
 			}
-
 		}
-
-		return false;
-
+		if(!flagValid) throw new RuntimeException("Stock não existente!");
 	}
 
 }
