@@ -1,6 +1,7 @@
 package br.inatel.quotationmanagement;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,7 +68,7 @@ class QuotationManagementApplicationTests {
 		
 		StockDto stockDto = new StockDto();
 		Map<LocalDate, Double> quoteMap = new HashMap<>();
-		quoteMap.put(LocalDate.parse("2019-02-03"), Double.parseDouble("10"));
+		quoteMap.put(LocalDate.of(2019, Month.APRIL, 10), 10.0);
 		
 		stockDto.setQuotes(quoteMap);
 		stockDto.setStockId("vale5");
