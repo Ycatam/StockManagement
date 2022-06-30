@@ -47,12 +47,24 @@ public class StockService {
 		return null;
 	}
 
-	public Stock save(Stock stock, List<Quote> listQuote) {
+	public Stock save(Stock stock) {
 
 		if (!verifyIfExistInStockManager(stock)) {
 			throw new RuntimeException("Stock não existente!");
 		}
 
+		saveStock(stock);
+		
+		List<Quote> listQuote = stock.getQuotes();
+		
+		listQuote.forEach(q -> saveQuote(q));
+		
+		return stock;
+
+	}
+	
+	private void saveStock(Stock stock) {
+		
 		Optional<Stock> opStock = stockRepository.findByStockId(stock.getStockId());
 		if (opStock.isPresent()) {
 
@@ -63,41 +75,26 @@ public class StockService {
 
 		stock = stockRepository.save(stock);
 		
-		for (Quote quote : listQuote) {
+	}
+	
+	private Quote saveQuote(Quote quote) {
+		
+		Optional<Quote> opQuote = quoteRepository.findByDateAndStockId(quote.getDate(), 
+				quote.getStock().getId());
+		
+		if (opQuote.isPresent()) {
 			
-			quote.setStock(stock);
+			Quote quoteExistent = opQuote.get();
+			quoteExistent.setPrice(quote.getPrice());
+			return quoteExistent;
 			
-			List<Quote> opQuote = quoteRepository.findAllByStockId(stock.getId());
-			
-			if (opQuote.isEmpty()) {
-				quoteRepository.save(quote);
-			}
-			
-			else {
-				
-				Boolean exists = false;
-				
-				for (Quote quoteAux : opQuote) {
-					
-					if (quote.getDate().equals(quoteAux.getDate())) {
-						//throw new RuntimeException("Data já cadastrada: " + quote.getDate() + " para o stock: " + stock.getStockId());
-						exists = true;
-						break;
-					}
-					
-				}
-				
-				if (!exists) {
-					quoteRepository.save(quote);
-				}
-				
-			}
-			
+		}else {
+			quote = quoteRepository.save(quote);
+			return quote;
 		}
 		
-		stock.getQuotes().size();// forçando load
-		return stock;
-
+		
+		
 	}
 
 	public void delete(Stock stock) {

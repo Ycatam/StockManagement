@@ -10,7 +10,7 @@ import br.inatel.quotationmanagement.modelo.Quote;
 
 public interface QuoteRepository extends JpaRepository<Quote, String> {
 
-	Optional<Quote> findByDateAndStockId(LocalDate date, String stockId);
+	Optional<Quote> findByDateAndStockId(LocalDate date, String id);
 
 	List<Quote> findAllByStockId(String id);
 	

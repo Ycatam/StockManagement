@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.inatel.quotationmanagement.dto.StockDto;
-import br.inatel.quotationmanagement.modelo.Quote;
 import br.inatel.quotationmanagement.modelo.Stock;
 import br.inatel.quotationmanagement.service.StockService;
 
@@ -57,10 +56,9 @@ public class StockController {
 	public ResponseEntity<StockDto> register(@RequestBody @Valid StockDto stockDto) {
 
 		Stock stock = stockDto.converterToStock();
-		List<Quote> listQuote = stock.getQuotes();
 		
 		try {
-			stock = stockService.save(stock, listQuote);
+			stock = stockService.save(stock);
 			return ResponseEntity.ok(new StockDto(stock));
 			
 		} catch (Exception e) {
