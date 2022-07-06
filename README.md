@@ -92,4 +92,10 @@ Example: localhost:8081/stocks/petr4
 
 #### http://localhost:8081/swagger-ui/#/
 
+### A Docker Image can be generated through the Dockerfile that is in the source files:
+
+To generete a docker image run the docker command in the example below:
+
+#### docker build -t rafaelrocha/TheNameOfyourFolderHere:1.0 .
+
 Thanks in advance, have fun trying this application. Any sugestions please do a PR!
